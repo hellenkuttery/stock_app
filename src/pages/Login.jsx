@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  {React,useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +12,11 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { deepPurple } from '@mui/material/colors';
-import { indigo } from '@mui/material/colors';
+import {useDispatch} from "react-redux"
+import {setUser} from "../features/authSlice"
+import { useNavigate } from 'react-router-dom';
+
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -41,15 +44,20 @@ const defaultTheme = createTheme({
 });
 
 export default function SignInSide() {
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    dispatch(setUser({email,password}))
+
+    setEmail("")
+    setPassword("")
+    navigate("/")
+    // });
   };
 
+  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '100vh', backgroundColor:"#2F3349" }}>
@@ -94,6 +102,7 @@ export default function SignInSide() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e)=>setEmail(e.target.value)}
                 autoFocus
               />
               <TextField
@@ -104,6 +113,7 @@ export default function SignInSide() {
                 label="Password"
                 type="password"
                 id="password"
+                onChange={(e)=>setPassword(e.target.value)}
                 autoComplete="current-password"
               />
               <FormControlLabel
