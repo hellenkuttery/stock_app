@@ -7,8 +7,16 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 // import { indigo } from '@mui/material/colors';
+import { useDispatch,useSelector } from 'react-redux';
+import { clearUser } from '../features/authSlice';
 
 export default function ButtonAppBar() {
+    const dispatch=useDispatch()
+    const {user}=useSelector((state)=>state.auth)
+    const handleLogOut=()=>{
+        dispatch(clearUser())
+        
+    }
   return (
     <Box sx={{ flexGrow: 1 }} >
       <AppBar position="static"sx={{
@@ -29,7 +37,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+        {user.email &&  <Button color="inherit" onClick={handleLogOut}>Logout</Button>}
+        {!user.email &&  <Button color="inherit" >Login</Button>}
         </Toolbar>
       </AppBar>
     </Box>

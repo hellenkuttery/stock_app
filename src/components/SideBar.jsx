@@ -2,7 +2,6 @@ import { Box, Container } from "@mui/material";
 import React from "react";
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Grid } from '@mui/material/Grid';
 
 
 const SideBar = () => {
