@@ -1,150 +1,129 @@
-import  {React,useState} from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useDispatch} from "react-redux"
-import {setUser} from "../features/authSlice"
-import { useNavigate } from 'react-router-dom';
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import LockIcon from "@mui/icons-material/Lock";
+import image from "../assets/result.svg";
+import { Link } from "react-router-dom";
+import {  Formik } from "formik";
+import LoginForm from "../components/LoginForm"
+import { useSelector } from "react-redux";
+import { object, string } from "yup";
+import useAuthCall from '../hooks/useAuthCall';
+
+const Login = () => {
+//  const {   loading } = useSelector((state) => state?.auth);
+  const {login}=useAuthCall()
 
 
-function Copyright(props) {
+  let loginSchema = object({
+    email: string().email().required("Bu Alan Zorunludur"),
+    password: string()
+      .required("Password Zorunludur")
+      .min(8, "Password en az 8 karakter olmalıdır")
+      .max(20, "Passwaod  en fazla 20 karakter olmalıdır")
+      .matches(/[A-Z]/, "En az bir büyük harf içermelidir")
+      .matches(/[a-z]/, "En az bir küçük harf içermelidir")
+      .matches(/\d/, "En az bir rakam içermelidir")
+      .matches(/[@$!%*?&]/, "En az bir özel karakter içermelidir"),
+  });
+
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://github.com/hellenkuttery/stock_app">
-        helenKuttery
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+    <Container maxWidth="lg">
+      <Grid
+        container
+        justifyContent="center"
+        direction="row-reverse"
+        sx={{
+          height: "100vh",
+          p: 2,
+        }}
+      >
+        <Grid item xs={12} mb={3}>
+          <Typography variant="h3" color="primary" align="center">
+            STOCK APP
+          </Typography>
+        </Grid>
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme({
-    palette:{
-        primary:{
-          main:"#6254B6",
-        },
-        secondary:{
-          main:'#2F3352',
-      }
-    }
-});
-
-export default function SignInSide() {
-  const dispatch=useDispatch()
-  const navigate=useNavigate()
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(setUser({email,password}))
-
-    setEmail("")
-    setPassword("")
-    navigate("/")
-    // });
-  };
-
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: '100vh', backgroundColor:"#2F3349" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage: 'url(https://demos.pixinvent.com/vuexy-nextjs-admin-template/demo-4/images/pages/auth-v2-login-illustration-dark.png)',
-            backgroundRepeat: 'no-repeat',
-            // (t) =>
-            //   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize:"contain",
-            backgroundPosition: 'left',
-          }}
-        />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ bgcolor: 'secondary.main' }}>
-          <Box
+        <Grid item xs={12} sm={10} md={6}>
+          <Avatar
             sx={{
-              my: 8,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-
+              backgroundColor: "secondary.light",
+              m: "auto",
+              width: 40,
+              height: 40,
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Welcome Stock App
-            </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={(e)=>setEmail(e.target.value)}
-                autoFocus
-              />
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={(e)=>setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
+            <LockIcon size="30" />
+          </Avatar>
+          <Typography
+            variant="h4"
+            align="center"
+            mb={4}
+            color="secondary.light"
+          >
+            Login
+          </Typography>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginSchema}
+            onSubmit={(values, actions) => {
+              // TODO: Login işlemleri burada gerçekleştirilecek
+              login(values)
+              actions.resetForm();
+              actions.setSubmitting(false);
+            }}
+            component={(props)=><LoginForm {...props}/>}
+
+          >
+            {/* {({ values, handleChange, handleBlur, errors, touched }) => (
+              <Form>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <TextField
+                    label="Email"
+                    name="email"
+                    id="email"
+                    type="email"
+                    value={values?.email || ""}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                    variant="outlined"
+                  />
+                  <TextField
+                    label="Password"
+                    name="password"
+                    id="password"
+                    type="password"
+                    value={values?.password || ""}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                    variant="outlined"
+                  />
+                  <LoadingButton variant="contained" type="Submit" loading={loading}>
+                    SUBMIT
+                  </LoadingButton>
+                </Box>
+              </Form>
+            )} */}
+          </Formik>
+          <Box sx={{ textAlign: "center", mt: 2 }}>
+            <Link to="/register">Do you have not an account?</Link>
           </Box>
         </Grid>
+
+        <Grid item xs={10} sm={7} md={6}>
+          <Container>
+            <img src={image} alt="img" />
+          </Container>
+        </Grid>
       </Grid>
-    </ThemeProvider>
+    </Container>
   );
-}
+};
+
+export default Login;
