@@ -10,10 +10,11 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import useStockCall from "../hooks/useStockCall";
+import { SentimentSatisfiedOutlined } from "@mui/icons-material";
 
 
 
-export default function FirmCard({ firm }) {
+export default function FirmCard({ firm,handleOpen,setInfo }) {
   const {deleteStockData}=useStockCall()
   return (
    
@@ -39,7 +40,7 @@ export default function FirmCard({ firm }) {
               gap: 2,
             }}
           >
-            <EditIcon sx={{ cursor: "pointer", "&:hover": { color: "red" } }} />
+            <EditIcon sx={{ cursor: "pointer", "&:hover": { color: "red" } }} onClick={()=>{handleOpen(); setInfo(firm)}}/>
             <DeleteIcon
               sx={{ cursor: "pointer", "&:hover": { color: "red" } }}
               onClick={()=>deleteStockData("firms",firm.id)}

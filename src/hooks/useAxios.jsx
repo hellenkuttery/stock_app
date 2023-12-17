@@ -1,26 +1,21 @@
-import axios from 'axios';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
-//? react hookslarına ihtiyacımız olmasaydı bu şekilde de oluşturabilirdik.
-// export const axiosWithPublic = axios.create({
-//   baseURL: import.meta.env.VITE_BASE_URL,
-// });
 
 const useAxios = () => {
-  const { token } = useSelector(state => state.auth); //& tokeni stateden okumak için axios instanceları custom hook içerinde tanımladık.
-  //+ birden fazla instance oluşturabiliriz. instance ı tanımladığımız isimle kullanabiliriz.
+  const {token}=useSelector(state=>state.auth)
   const axiosWithToken = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL  ,
-    headers: { Authorization: `Token ${token}` },
+    baseURL: "http://20004.fullstack.clarusway.com",
+    headers: {Authorization: `Token ${token}`}
+  });
+  const axiosWithPublic= axios.create({
+    baseURL: "http://20004.fullstack.clarusway.com",
   });
 
-  const axiosWithPublic = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL ,
-  });
 
-  return { axiosWithToken, axiosWithPublic };
+
+return {axiosWithPublic,axiosWithToken}
+
 }
 
 export default useAxios
-
-// https://axios-http.com/docs/instance
