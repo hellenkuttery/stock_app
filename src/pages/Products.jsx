@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
 import ProductModal from "../components/modals/ProductModal"
-
+import ProductTable from "../components/ProductTable"
 const Products = () => {
   const { getStockData } = useStockCall();
   const { firms } = useSelector((state) => state.stock);
@@ -29,13 +29,15 @@ const [info, setInfo] = useState({
 /* -------------------------------------------------------------------------- */
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{height:"100vh"}}>
       <Typography color="error" variant="h4" mt={10} mb={2}>
         Products
       </Typography>
       <Button variant="contained" onClick={handleOpen}>Products</Button>
       <ProductModal open={open} handleClose={handleClose} info={info} setInfo={setInfo}/>
-    </Container>
+       <ProductTable/>
+   </Container>
+ 
   );
 };
 
