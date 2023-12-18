@@ -1,9 +1,43 @@
-import React from 'react'
+import React, { useEffect ,useState} from "react";
+import useStockCall from "../hooks/useStockCall";
+import { Container, Grid } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
+import ProductModal from "../components/modals/ProductModal"
 
 const Products = () => {
-  return (
-    <div>Products</div>
-  )
-}
+  const { getStockData } = useStockCall();
+  const { firms } = useSelector((state) => state.stock);
+  //lifting State App
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  useEffect(() => {
+    getStockData("products");
+    getStockData("categories");
+    getStockData("brands");
+  }, []);
+/* -------------------------------------------------------------------------- */
+const [info, setInfo] = useState({    
+  name: "",
+  categoryId: "",
+  brandId: "",
+});
 
-export default Products
+
+/* -------------------------------------------------------------------------- */
+
+  return (
+    <Container maxWidth="xl">
+      <Typography color="error" variant="h4" mt={10} mb={2}>
+        Products
+      </Typography>
+      <Button variant="contained" onClick={handleOpen}>Products</Button>
+      <ProductModal open={open} handleClose={handleClose} info={info} setInfo={setInfo}/>
+    </Container>
+  );
+};
+
+export default Products;
+

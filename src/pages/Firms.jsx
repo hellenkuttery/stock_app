@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
 
 import FirmCard from "./../components/FirmCard";
-import FirmModal from './../components/FirmModal';
+import FirmModal from './../components/modals/FirmModal';
 
 const Firms = () => {
   const { getStockData } = useStockCall();

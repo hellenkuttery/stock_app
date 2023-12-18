@@ -20,7 +20,7 @@ const internalLisnks=[
     {
         icon:<MailIcon/>,
         title:"Products",
-        url:"/stock/"
+        url:"/stock/products/"
     }
     ,
     {

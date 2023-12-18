@@ -79,7 +79,7 @@ import useAxios from './useAxios';
               // data yok payload yok o nedenle dispatcch yayınlamamamız gerekmiyor
               // Sadece bilgiyi güncelleme yapmak gerekiyor
 
-              await axiosWithToken.delete(`stock/${url}/${id}`)
+              await axiosWithToken.delete(`${url}/${id}`)
               getStockData(url)
               console.log("deleted")
               toastSuccessNotify("Bilgi silindi")
@@ -91,7 +91,7 @@ import useAxios from './useAxios';
           const postStockData = async (url, info) => {
             dispatch(fetchStart());
             try {
-              await axiosWithToken.post(`stock/${url}/`, info);
+              await axiosWithToken.post(`${url}/`, info);
         
               getStockData(url);
               toastSuccessNotify(`${url} successfuly created!`);
@@ -105,7 +105,7 @@ import useAxios from './useAxios';
           const putStockData = async (url, info) => {
             dispatch(fetchStart());
             try {
-              await axiosWithToken.put(`stock/${url}/${info.id}/`, info);
+              await axiosWithToken.put(`${url}/${info.id}/`, info);
         
               getStockData(url);
               toastSuccessNotify(`${url} successfuly updated!`);
