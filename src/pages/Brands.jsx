@@ -31,7 +31,7 @@ const [info, setInfo] = useState({
 /* -------------------------------------------------------------------------- */
 useEffect(() => {
   getStockData("brands");
-  console.log(brands)
+  
 }, []);
   return (
     <Container maxWidth="xl">

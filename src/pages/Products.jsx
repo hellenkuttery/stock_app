@@ -8,7 +8,7 @@ import ProductModal from "../components/modals/ProductModal"
 import ProductTable from "../components/ProductTable"
 const Products = () => {
   const { getStockData } = useStockCall();
-  const { firms } = useSelector((state) => state.stock);
+  // const { firms } = useSelector((state) => state.stock);
   //lifting State App
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -17,6 +17,8 @@ const Products = () => {
     getStockData("products");
     getStockData("categories");
     getStockData("brands");
+  
+  
   }, []);
 /* -------------------------------------------------------------------------- */
 const [info, setInfo] = useState({    
@@ -33,8 +35,8 @@ const [info, setInfo] = useState({
       <Typography color="error" variant="h4" mt={10} mb={2}>
         Products
       </Typography>
-      <Button variant="contained" onClick={handleOpen}>Products</Button>
-      <ProductModal open={open} handleClose={handleClose} info={info} setInfo={setInfo}/>
+      <Button variant="contained" onClick={handleOpen} sx={{marginBottom:"10px"}} >Products</Button>
+      <ProductModal  open={open} handleClose={handleClose} info={info} setInfo={setInfo}/>
        <ProductTable/>
    </Container>
  
