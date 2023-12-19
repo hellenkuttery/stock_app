@@ -57,8 +57,8 @@ import useAxios from './useAxios';
               //   },
               // });
               // Yukarıdaki yerine useAxiosWithToken ile yapabiliyoruz
-              const {data}=await axiosWithToken(`stock/${url}/`)
-        
+              const {data}=await axiosWithToken(`stock/${url}`)
+              
               dispatch(getSuccess({ data, url })); // 'dispatch' kullanımı düzeltilmiş
         
             } catch (error) {

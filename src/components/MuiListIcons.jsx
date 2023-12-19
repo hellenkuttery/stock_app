@@ -34,6 +34,12 @@ const internalLisnks=[
         title:"Purchase",
         url:"/stock/purchases"
     }
+    ,
+    {
+        icon:<ShoppingCartIcon/>,
+        title:"Brands",
+        url:"/stock/brands"
+    }
 ]
 
 const externalLinks=[
