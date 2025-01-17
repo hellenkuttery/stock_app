@@ -2,55 +2,59 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const stockSlice = createSlice({
   name: "stock",
-
   initialState: {
-
     loading: false,
     error: false,
-    sales:[],
+    firms: [],
+    brands: [],
     purchases:[],
-    brands:[],
-    firms:[],
-    categories:[]
+    categories: [],
+    products: [],
+    sales: [],
   },
   reducers: {
     fetchStart: (state) => {
       state.loading = true;
       state.error = false;
-    }
-    ,
-    // firmsSuccess:(state,{payload})=>{
-    //     state.loading=false;
-    //     state.firms=payload
-    // },
-    // brandsSuccess:(state,{payload})=>{
-    //     state.loading=false;
-    //     state.brands=payload
-    // }, 
-    // brandsSuccess:(state,{payload})=>{
-    //     state.loading=false;
-    //     state.brands=payload
-    // }, 
-    // payload gelsiğiyerde iismler olduğu içinbu şekilde tek tek yapmak yerine payload içinde gönderirsek olacaktır.
-    // Bu şekilde daha moduler ve temiz bir kod olmuş olacak
-    getSuccess:(state,{payload:{data,url}})=>{
-        state.loading=false;
-        state[url]=data
     },
-    fetchFail: state=> {
+    fetchFail: (state) => {
       state.loading = false;
       state.error = true;
-    }
-},
+    },
+    stockSuccess: (state, { payload: { data, url } }) => {
+      // state[payload.url]=payload.data.data
+      state[url] = data.data;
+      state.loading = false;
+      state.error = false;
+    },
+    getProductsCatBrandsSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.products = payload[0];
+      state.categories = payload[1];
+      state.brands = payload[2];
+    },
+    getFirmsBrandsProductsSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.purchases = payload[0];
+      state.firms = payload[1];
+      state.brands= payload[2];
+      state.products = payload[3];
+    },
+    getPurcSalesSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.purchases = payload[0];
+      state.sales = payload[1];
+    },
+  },
 });
 
 export const {
-  fetchStart,
-  getSuccess,
   fetchFail,
+  fetchStart,
+  stockSuccess,
+  getProductsCatBrandsSuccess,
+  getFirmsBrandsProductsSuccess,
+  getPurcSalesSuccess,
 } = stockSlice.actions;
+
 export default stockSlice.reducer;
-
-
-
-

@@ -1,61 +1,67 @@
-import Box from "@mui/material/Box";
+import { Button, CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box"
+import TextField from "@mui/material/TextField"
+import { Form } from "formik"
+import { useSelector } from "react-redux"
+import { object, string } from "yup"; //! bu şekilde de direk olarak metodları alıp yine validasyon şemamızı oluşturabiliriz. 
 
-import { Form} from "formik";
+export const loginScheme = object({
+  email: string()
+    .email("Lutfen valid bir email giriniz")
+    .required("Email zorunludur"),
+  password: string()
+    .required("password zorunludur")
+})
 
-import { useSelector } from "react-redux";
-import { TextField } from "@mui/material";
-import { object, string } from "yup";
-import { LoadingButton } from "@mui/lab";
-
-const LoginForm = ({ values, handleChange, handleBlur, errors, touched }) => {
-    const { loading } = useSelector((state) => state?.auth);
-
-    let loginSchema = object({
-        email: string().email().required("Bu Alan Zorunludur"),
-        password: string()
-          .required("Password Zorunludur")
-          .min(8, "Password en az 8 karakter olmalıdır")
-          .max(20, "Passwaod  en fazla 20 karakter olmalıdır")
-          .matches(/[A-Z]/, "En az bir büyük harf içermelidir")
-          .matches(/[a-z]/, "En az bir küçük harf içermelidir")
-          .matches(/\d/, "En az bir rakam içermelidir")
-          .matches(/[@$!%*?&]/, "En az bir özel karakter içermelidir"),
-      });
+const LoginForm = ({ values, handleChange, errors, touched, handleBlur }) => {
+  const { loading } = useSelector(state => state.auth);// storeda yaptığımız fetchStart işlemini kullanmış olduk.
   return (
-   
-        <Form>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-              label="Email"
-              name="email"
-              id="email"
-              type="email"
-              value={values?.email || ""}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.email && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              variant="outlined"
-            />
-            <TextField
-              label="Password"
-              name="password"
-              id="password"
-              type="password"
-              value={values?.password || ""}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touched.password && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-              variant="outlined"
-            />
-            <LoadingButton variant="contained" type="Submit" loading={loading}>
-              SUBMIT
-            </LoadingButton>
-          </Box>
-        </Form>
-  
-  )
+    <Form>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <TextField
+          label="Email"
+          name="email"
+          id="email"
+          type="email"
+          variant="outlined"
+          value={values.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={touched.email && errors.email}
+          error={touched.email && Boolean(errors.email)}
+        />
+        <TextField
+          label="password"
+          name="password"
+          id="password"
+          type="password"
+          variant="outlined"
+          value={values.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          helperText={touched.password && errors.password}
+          error={touched.password && Boolean(errors.password)}
+        />
+        {!loading ? (
+          <Button variant="contained" type="submit">
+           Sign In
+          </Button>
+        ) : (
+          <Button variant="contained" disabled={loading}>
+            <CircularProgress />
+          </Button>
+        )}
+
+        {/* <Button
+          variant="contained"
+          type="submit"
+          disabled={loading}
+          startIcon={loading && <CircularProgress />}>
+          Submit
+        </Button> */}
+      </Box>
+    </Form>
+  );
 }
 
 export default LoginForm

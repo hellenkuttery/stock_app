@@ -1,71 +1,75 @@
-import React, { useEffect ,useState} from "react";
-import useStockCall from "../hooks/useStockCall";
-import { Container, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import React from "react";
+import useStockCall from "../hook/useStockCall";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Button } from "@mui/material";
-
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 import FirmCard from "./../components/FirmCard";
-import FirmModal from './../components/modals/FirmModal';
+import FirmModal from "./../components/Modals/FirmModal";
+import { useState } from "react";
 
 const Firms = () => {
   const { getStockData } = useStockCall();
+  // Lifting state up işlemi yapıldı.Modaldaki stateler firms sayfasına alındı
   const { firms } = useSelector((state) => state.stock);
-  //lifting State App
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+     setInitialState({ name: "", address: "", phone: "", image: "" });
+  };
+  const [initialState, setInitialState] = useState({
+    name: "",
+    address: "",
+    phone: "",
+    image: "",
+  });
+
   useEffect(() => {
     getStockData("firms");
   }, []);
-/* -------------------------------------------------------------------------- */
-const [info, setInfo] = useState({
-    
-  name: "",
-  phone: "",
-  image: "",
-  address: "",
-});
-
-/* -------------------------------------------------------------------------- */
 
   return (
-    <Container maxWidth="xl">
-      <Typography color="error" variant="h4" mt={10} mb={2}>
+    <div>
+      <Typography variant="h4" sx={{ color: "red", marginBottom: "1rem" }}>
         Firms
       </Typography>
-      <Button variant="contained" onClick={handleOpen}>New Firm</Button>
-      <FirmModal open={open} handleClose={handleClose} info={info} setInfo={setInfo}/>
-      <Grid container justifyContent="center" spacing={3} mt={3}>
-        {firms?.map((firm) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={firm.id}>
-            <FirmCard firm={firm} handleOpen={handleOpen} setInfo={setInfo} />
+
+      <Button
+        onClick={handleOpen}
+        sx={{
+          backgroundColor: "secondary.main",
+          color: "white",
+          padding: "0.2rem 1rem",
+          marginBottom: "1rem",
+          "&:hover": {
+            backgroundColor: "secondary.main",
+          },
+        }}
+      >
+        New Firm
+      </Button>
+      {open && (
+        <FirmModal
+          open={open}
+          handleClose={handleClose}
+          initialState={initialState}
+        />
+      )}
+      <Grid container sx={{ marginLeft: "1rem" }}>
+        {firms.map((firm, index) => (
+          <Grid key={index} size={{ xs: 2, sm: 4, md: 4 }}>
+            <FirmCard
+              {...firm}
+              handleOpen={handleOpen}
+              setInitialState={setInitialState}
+            />
           </Grid>
         ))}
       </Grid>
-    </Container>
+    </div>
   );
 };
 
 export default Firms;
-
-// const { token } = useSelector(state => state.auth);
-// const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-// const getFirms = async () => {
-//   dispatch(fetchStart()); // 'dispatch' doğru şekilde kullanılmış
-
-//   try {
-//     const { data } = await axios(`${BASE_URL}stock/firms/`, {
-//       headers: {
-//         Authorization: `Token ${token}`, // 'Token' yerine `${token}` kullanılmalı
-//       },
-//     });
-
-//     console.log(data);
-//     dispatch(getSuccess({ data, url: 'firms' })); // 'dispatch' kullanımı düzeltilmiş
-
-//   } catch (error) {
-//     dispatch(fetchFail());
-//   }
-// };

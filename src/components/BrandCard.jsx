@@ -41,7 +41,7 @@ const ExpandMore = styled((props) => {
   ],
 }));
 
-export default function FirmCard({_id,name,phone,address,image, handleOpen,setInitialState }) {
+export default function BrandCard({_id,name,phone,address,image, handleOpen,setInitialState }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -102,7 +102,7 @@ export default function FirmCard({_id,name,phone,address,image, handleOpen,setIn
       <CardActions disableSpacing>
         <IconButton
           aria-label="add to favorites"
-          onClick={() => getDeleteData("firms",_id)}
+          onClick={() => getDeleteData("brands",_id)}
         >
           <DeleteOutlineIcon
             sx={{
@@ -112,7 +112,7 @@ export default function FirmCard({_id,name,phone,address,image, handleOpen,setIn
             }}
           />
         </IconButton>
-        <IconButton aria-label="share" onClick={()=>{handleOpen(); setInitialState({_id,name,phone,address,image}) }}     >
+        <IconButton aria-label="share" onClick={()=>{handleOpen(); setInitialState({_id,name,image}) }}     >
           <EditIcon
             sx={{
               "&:hover": {

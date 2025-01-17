@@ -2,51 +2,43 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
   name: "auth",
-
   initialState: {
-    currentUser: null,
     loading: false,
     error: false,
-    isAdmin: false,
+    currentUser: null,
     token: null,
   },
   reducers: {
     fetchStart: (state) => {
       state.loading = true;
       state.error = false;
-    }
-    ,
-        loginSuccess: (state, { payload }) => {
-          state.loading = false;
-          state.currentUser = payload?.user?.username;
-          state.isAdmin = payload?.user?.is_superuser;
-          state.token = payload?.key;
-        },
-        logoutSuccess: (state) => {
-          state.loading = false;
-          state.currentUser = null;
-          state.token = null;
-          state.isAdmin=false
-        },
-        registerSuccess: (state, { payload }) => {
-          state.loading = false;
-          state.currentUser = payload?.username;
-          state.token = payload?.token;
-          state.error = false;
-        },
-    fetchFail: (state) => {
-      state.loading = false;
-      state.error = true;
     },
+    registerSuccess:(state,{payload})=>{
+      state.currentUser=payload.data.username;
+      state.token=payload.token;
+      state.loading=true;
+    },
+    loginSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.currentUser = payload?.user?.username;
+      state.isAdmin = payload?.user?.isAdmin;
+      state.token = payload?.token;
+    },
+    logoutSuccess: (state) => {
+      state.loading = false;
+      state.currentUser =null      
+      state.token = null
+    },
+
+
+    fetchFail:(state)=>{
+      state.loading=false;
+      state.error=true;
+    }
   },
 });
 
-export const {
-  fetchStart,
-  loginSuccess,
-  logoutSuccess,
-  registerSuccess,
-  fetchFail,
-} = authSlice.actions;
-export default authSlice.reducer;
 
+export const {fetchStart,fetchFail,registerSuccess,loginSuccess,logoutSuccess}=authSlice.actions;
+
+export default authSlice.reducer;
